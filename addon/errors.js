@@ -16,7 +16,7 @@ const func = function(property) {
 
 export default EmberObject.extend({
   unknownProperty(property) {
-    if (cache.hasOwnKey(property)) {
+    if (cache.hasOwnProperty(property)) {
       run.once(this, cache[property]);
     } else {
       const handler = func.bind(this, property);
