@@ -8,10 +8,22 @@ const {
   run
 } = Ember;
 
+const cache = {};
+
+const func = function(property) {
+  set(this, property, emberArray());
+};
+
 export default EmberObject.extend({
   unknownProperty(property) {
-    let arr = emberArray();
-    run.scheduleOnce('afterRender', this, () => set(this, property, arr));
-    return arr;
+    if (cache.hasOwnKey(property)) {
+      run.once(this, cache[property]);
+    } else {
+      const handler = func.bind(this, property);
+      cache[property] = handler;
+      run.once(this, handler);
+    }
+
+    return emberArray();
   }
 });
