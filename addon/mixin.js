@@ -118,6 +118,19 @@ export default Mixin.create(setValidityMixin, {
     this.buildValidators();
 
     this.validators.forEach((validator) => {
+      //// build nested errors object
+      const names = validator.property.split('.');
+      let objectPointer = this.errors;
+      for (let i = 0; i < names.length; i++) {
+        let newObjectPointer = objectPointer[names[i]];
+        if (newObjectPointer === undefined) {
+          newObjectPointer = Ember.Object.create();
+          set(objectPointer, names[i], newObjectPointer);
+        }
+        objectPointer = newObjectPointer;
+      }
+      //// end build nested object
+      
       validator.addObserver('errors.[]', this, function(sender) {
 
         let errors = emberArray();
@@ -128,9 +141,7 @@ export default Mixin.create(setValidityMixin, {
           }
         });
         
-        Ember.run.next(() => {
-          set(this, `errors.${sender.property}`, errors);
-        });
+        set(this, `errors.${sender.property}`, errors);
       });
     });
 
