@@ -124,7 +124,7 @@ export default Mixin.create(setValidityMixin, {
       for (let i = 0; i < names.length; i++) {
         let newObjectPointer = objectPointer[names[i]];
         if (newObjectPointer === undefined) {
-          newObjectPointer = Ember.Object.create();
+          newObjectPointer = emberArray();
           set(objectPointer, names[i], newObjectPointer);
         }
         objectPointer = newObjectPointer;
