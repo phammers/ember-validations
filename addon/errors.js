@@ -16,9 +16,13 @@ const func = function(property) {
 
 export default EmberObject.extend({
   unknownProperty(property) {
+    if (property === 'defineProperty') {
+      return;
+    }
     if (cache.hasOwnProperty(property)) {
       run.once(this, cache[property]);
     } else {
+      Ember.defineProperty(this,property,null );
       const handler = func.bind(this, property);
       cache[property] = handler;
       run.once(this, handler);
@@ -26,4 +30,5 @@ export default EmberObject.extend({
 
     return emberArray();
   }
+  
 });

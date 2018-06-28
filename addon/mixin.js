@@ -120,12 +120,12 @@ export default Mixin.create(setValidityMixin, {
     this.validators.forEach((validator) => {
       //// build nested errors object
       const names = validator.property.split('.');
-      let objectPointer = this.errors;
+      let objectPointer = this.get('errors');
       for (let i = 0; i < names.length; i++) {
         let newObjectPointer = objectPointer.get(names[i]);
         if (!objectPointer.hasOwnProperty(names[i])) {
           newObjectPointer = emberArray();
-          set(objectPointer, names[i], newObjectPointer);
+          //set(objectPointer, names[i], newObjectPointer);
         }
         objectPointer = newObjectPointer;
       }
