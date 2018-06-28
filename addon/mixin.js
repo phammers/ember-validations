@@ -122,8 +122,8 @@ export default Mixin.create(setValidityMixin, {
       const names = validator.property.split('.');
       let objectPointer = this.errors;
       for (let i = 0; i < names.length; i++) {
-        let newObjectPointer = objectPointer[names[i]];
-        if (newObjectPointer === undefined) {
+        let newObjectPointer = objectPointer.get(names[i]);
+        if (!objectPointer.hasOwnProperty(names[i])) {
           newObjectPointer = emberArray();
           set(objectPointer, names[i], newObjectPointer);
         }
